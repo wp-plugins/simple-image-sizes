@@ -1,10 +1,8 @@
-.progress {
-	position: relative;
-	height: 13px;
-	margin-bottom: 13px;
-	margin-top: 60px;
-	color: #FFFFFF;
+.media-item.sis {
 	display: none;
+}
+.media-item.sis .progress {
+	width: 100%;
 }
 input.h, input.w {
 	border-color: #DFDFDF;
@@ -58,8 +56,6 @@ tr.notChangedAdding {
 	margin-top: 20px;
 	padding: 0 .7em;
 }
-
-#time .ui-icon{
-	float: left;
-	margin-right: .7em;
+#post-body .sis-regenerate-one{
+	float:left;
 }
