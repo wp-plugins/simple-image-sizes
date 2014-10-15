@@ -390,6 +390,8 @@ Class SIS_Admin_Media {
 					FROM $wpdb->posts 
 					WHERE post_type IN ('".implode( "', '", $_POST['post_types'] )."')
 				)" );
+			// Return the Id's and Title of medias
+			SIS_Admin_Main::displayJson( array( 'total' =>  $attachments  ) );
 				
 		} else {
 			$attachments = get_children( array(
@@ -400,10 +402,10 @@ Class SIS_Admin_Media {
 				'post_parent' => null, // any parent
 				'output' => 'ids',
 			) );
+			// Return the Id's and Title of medias
+			SIS_Admin_Main::displayJson( array( 'total' => count( $attachments ) ) );
 		}
 
-		// Return the Id's and Title of medias
-		SIS_Admin_Main::displayJson( array( 'total' => count( $attachments ) ) );
 	}
 
 	/**
@@ -422,7 +424,7 @@ Class SIS_Admin_Media {
 
 		// Check the nonce
 		if( !wp_verify_nonce( $nonce , 'regen' ) ) {
-			SIS_Admin_Main::displayJson( array( 'error' => _e( 'Trying to cheat ?', 'simple-image-sizes' ) ) );
+			SIS_Admin_Main::displayJson( array( 'error' => __( 'Trying to cheat ?', 'simple-image-sizes' ) ) );
 		}
 
 		if ( $post_types !== 'any' ) {
@@ -433,7 +435,7 @@ Class SIS_Admin_Media {
 				}
 			}
 			
-			if( empty( $_POST['post_types'][$key]) ) {
+			if( empty( $_POST['post_types'] ) ) {
 				SIS_Admin_Main::displayJson();
 			}
 			
