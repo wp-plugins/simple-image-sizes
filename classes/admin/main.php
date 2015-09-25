@@ -17,7 +17,7 @@ Class SIS_Admin_Main {
 			'jquery',
 			'jquery-ui-button',
 			'jquery-ui-progressbar',
-			'underscore'
+			'underscore',
 		), SIS_VERSION );
 
 		// Differencitate the scripts
@@ -41,7 +41,6 @@ Class SIS_Admin_Main {
 	 */
 	public static function localize_vars() {
 		return array(
-			'ajaxUrl'            => admin_url( '/admin-ajax.php' ),
 			'reading'            => __( 'Reading attachments...', 'simple-image-sizes' ),
 			'maximumWidth'       => __( 'Maximum width', 'simple-image-sizes' ),
 			'maximumHeight'      => __( 'Maximum height', 'simple-image-sizes' ),
@@ -59,7 +58,7 @@ Class SIS_Admin_Main {
 			'validate'           => __( 'Validate image size name', 'simple-image-sizes' ),
 			'done'               => __( 'Done.', 'simple-image-sizes' ),
 			'size'               => __( 'Size', 'simple-image-sizes' ),
-			'notOriginal'        => __( 'Don\'t use the basic Wordpress thumbnail size name, use the form above to edit them', 'simple-image-sizes' ),
+			'notOriginal'        => __( 'Don\'t use the basic WordPress thumbnail size name, use the form above to edit them', 'simple-image-sizes' ),
 			'alreadyPresent'     => __( 'This size is already registered, edit it instead of recreating it.', 'simple-image-sizes' ),
 			'confirmDelete'      => __( 'Do you really want to delete these size ?', 'simple-image-sizes' ),
 			'update'             => __( 'Update', 'simple-image-sizes' ),
@@ -70,10 +69,10 @@ Class SIS_Admin_Main {
 			'customName'         => __( 'Public name', 'simple-image-sizes' ),
 			'finishedAt'         => __( ' finished at :', 'simple-image-sizes' ),
 			'phpError'           => __( 'Error during the php treatment, be sure to not have php errors in your page', 'simple-image-sizes' ),
-			'notSaved'           => __( 'All the sizes you have modifed are not saved, continue anyway ?', 'simple-image-sizes' ),
+			'notSaved'           => __( 'All the sizes you have modified are not saved, continue anyway ?', 'simple-image-sizes' ),
 			'soloRegenerated'    => __( 'This image has been regenerated in %s seconds', 'simple-image-sizes' ),
 			'crop_positions'     => self::get_available_crop(),
-			'regen_one'          => wp_create_nonce( 'regen' )
+			'regen_one'          => wp_create_nonce( 'regen' ),
 		);
 	}
 
@@ -94,7 +93,7 @@ Class SIS_Admin_Main {
 		if ( (int) $att_id <= 0 ) {
 			return array(
 				'time'  => timer_stop( false, 4 ),
-				'error' => __( 'No id given in POST datas.', 'simple-image-sizes' )
+				'error' => __( 'No id given in POST datas.', 'simple-image-sizes' ),
 			);
 		}
 
@@ -107,14 +106,14 @@ Class SIS_Admin_Main {
 				return array(
 					'src'     => wp_get_attachment_thumb_url( $att_id ),
 					'time'    => timer_stop( false, 4 ),
-					'message' => sprintf( __( 'This file already exists in this size and have not been regenerated :<br/><a target="_blank" href="%1$s" >%2$s</a>', 'simple-image-sizes' ), get_edit_post_link( $att_id ), get_the_title( $att_id ) )
+					'message' => sprintf( __( 'This file already exists in this size and have not been regenerated :<br/><a target="_blank" href="%1$s" >%2$s</a>', 'simple-image-sizes' ), get_edit_post_link( $att_id ), get_the_title( $att_id ) ),
 				);
 			}
 		} else {
 			return array(
 				'src'   => wp_get_attachment_thumb_url( $att_id ),
 				'time'  => timer_stop( false, 4 ),
-				'error' => sprintf( __( 'This file does not exists and have not been regenerated :<br/><a target="_blank" href="%1$s" >%2$s</a>', 'simple-image-sizes' ), get_edit_post_link( $att_id ), get_the_title( $att_id ) )
+				'error' => sprintf( __( 'This file does not exists and have not been regenerated :<br/><a target="_blank" href="%1$s" >%2$s</a>', 'simple-image-sizes' ), get_edit_post_link( $att_id ), get_the_title( $att_id ) ),
 			);
 
 		}
@@ -123,7 +122,7 @@ Class SIS_Admin_Main {
 		return array(
 			'time'  => timer_stop( false, 4 ),
 			'src'   => wp_get_attachment_thumb_url( $att_id ),
-			'title' => get_the_title( $att_id )
+			'title' => get_the_title( $att_id ),
 		);
 	}
 
@@ -176,7 +175,13 @@ Class SIS_Admin_Main {
 			'bottom' => __( 'bottom', 'simple-image-sizes' ),
 		);
 
-		$crops = array();
+		/**
+		 * Base crops
+		 */
+		$crops = array(
+			0 => __( 'No','simple-image-sizes' ),
+			1 => __( 'Yes','simple-image-sizes' ),
+		);
 		foreach ( $x as $x_pos => $x_pos_label ) {
 			foreach ( $y as $y_pos => $y_pos_label ) {
 				$crops[ $x_pos . '_' . $y_pos ] = $x_pos_label . ' ' . $y_pos_label;
@@ -197,7 +202,7 @@ Class SIS_Admin_Main {
 	public static function is_crop_position( $crop_position ) {
 		$crops = self::get_available_crop();
 
-		return isset( $crops[ $crop_position ] );
+		return is_bool( $crop_position ) ? $crop_position : isset( $crops[ $crop_position ] );
 	}
 
 	/**
@@ -227,7 +232,7 @@ Class SIS_Admin_Main {
 	 * @return void
 	 * @author Nicolas Juen
 	 */
-	public static function displayJson( $data = array() ) {
+	public static function display_json( $data = array() ) {
 		if ( function_exists( 'wp_send_json' ) ) {
 			wp_send_json( $data );
 		}
